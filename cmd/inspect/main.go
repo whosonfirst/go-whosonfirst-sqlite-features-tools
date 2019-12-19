@@ -42,6 +42,10 @@ func (i *Inspector) InspectRepo(repo string) error {
 	
 	db, err := database.NewDBWithDriver("sqlite3", ":memory:")
 
+	if err != nil {
+		return err
+	}
+	
 	defer db.Close()
 	
 	err = db.LiveHardDieFast()
