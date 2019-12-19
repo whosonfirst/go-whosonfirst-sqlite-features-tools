@@ -20,7 +20,7 @@ type Inspector struct {
 func (i *Inspector) Inspect(repos ...string) {
 
 	// how many of these can we do concurrently?
-	
+
 	for _, repo := range repos {
 
 		err := i.InspectRepo(repo)
@@ -35,31 +35,39 @@ func (i *Inspector) InspectRepo(repo string) error {
 
 	t1 := time.Now()
 	log.Printf("[INFO] Inspect %s at %v\n", repo, t1)
-	
+
 	defer func() {
 		log.Printf("[INFO] Time to inspect %s, %v\n", repo, time.Since(t1))
 	}()
-	
+
 	db, err := database.NewDBWithDriver("sqlite3", ":memory:")
 
 	if err != nil {
 		return err
 	}
-	
+
 	defer db.Close()
-	
+
 	err = db.LiveHardDieFast()
 
 	if err != nil {
 		return err
 	}
-	
-	db_tables, err := tables.CommonTablesWithDatabase(db)
 
+	geojson_opts := &tables.GeoJSONTableOptions{
+		IndexAltFiles: true,
+	}
+	
+	table_opts := &tables.CommonTablesOptions{
+		GeoJSON: geojson_opts,
+	}
+	
+	db_tables, err := tables.CommonTablesWithDatabaseAndOptions(db, table_opts)
+	
 	if err != nil {
 		return err
 	}
-	
+
 	opts := index.DefaultSQLiteFeaturesIndexerCallbackOptions()
 	cb := index.SQLiteFeaturesIndexerCallback(opts)
 
@@ -70,7 +78,7 @@ func (i *Inspector) InspectRepo(repo string) error {
 	}
 
 	repo_uri := fmt.Sprintf("git@github.com:%s/%s.git", i.Owner, repo)
-	to_index := []string{ repo_uri }
+	to_index := []string{repo_uri}
 
 	return idx.IndexPaths("git://", to_index)
 }
@@ -100,6 +108,6 @@ func main() {
 	i := &Inspector{
 		Owner: *org,
 	}
-	
+
 	i.Inspect(repos...)
 }
