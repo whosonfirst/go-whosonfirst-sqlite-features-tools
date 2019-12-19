@@ -2,7 +2,7 @@
 
 Internal tool for ensuring that Who's On First SQLite databases can be indexed.
 
-## How it work
+## How it works
 
 A list of repos is fetch from the `whosonfirst-data` organization (using the `go-whosonfirst-github` package). Each repo is cloned in to memory (using the `go-whosonfirst-index-git` package and indexed (using the `go-whosonfirst-sqlite-features-index` package).
 
