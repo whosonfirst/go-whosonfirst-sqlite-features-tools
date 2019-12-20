@@ -30,7 +30,11 @@ $> go run -mod vendor cmd/inspect/main.go -prefix whosonfirst-data-admin-
 Here's an example of a failed repo:
 
 ```
-TBW
+$> go run -mod vendor cmd/inspect/main.go -prefix whosonfirst-data-admin-sx
+
+2019/12/19 18:13:54 [INFO] Inspect whosonfirst-data-admin-sx at 2019-12-19 18:13:54.712724 -0800 PST m=+9.998397476
+2019/12/19 18:13:57 [INFO] Time to inspect whosonfirst-data-admin-sx, 2.686999054s
+2019/12/19 18:13:57 [WARNING] 'whosonfirst-data-admin-sx' failed indexing because: Unable to load data/102/553/765/102553765-alt-woedb.geojson, because Feature is missing a properties.wof:repo property (Feature is missing a properties.wof:name property)
 ```
 
 ## See also
