@@ -57,13 +57,13 @@ func (i *Inspector) InspectRepo(repo string) error {
 	geojson_opts := &tables.GeoJSONTableOptions{
 		IndexAltFiles: true,
 	}
-	
+
 	table_opts := &tables.CommonTablesOptions{
 		GeoJSON: geojson_opts,
 	}
-	
+
 	db_tables, err := tables.CommonTablesWithDatabaseAndOptions(db, table_opts)
-	
+
 	if err != nil {
 		return err
 	}
